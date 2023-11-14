@@ -1,0 +1,230 @@
+#chat {
+  --safezone-width: 102.4rem;
+}
+
+.messages {
+  box-sizing: border-box;
+  flex-grow: 1;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: var(--safezone-width);
+  height: 100%;
+  margin: 0 auto;
+  padding-bottom: calc(5rem + var(--software-buttons-height));
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none
+}
+
+.messages::-webkit-scrollbar {
+  display: none;
+}
+
+.message {
+  box-sizing: border-box;
+  display: flex;
+  flex-shrink: 0;
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0 0.5rem;
+}
+
+.message:not(.yours) {
+  animation: message-appear 0.5s cubic-bezier(0.5, 0.8, 0, 1.1);
+}
+
+@keyframes message-appear {
+  from {
+    transform: translateY(3rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.message.yours {
+  flex-direction: row-reverse;
+}
+
+.message.yours + .message.yours {
+  margin-top: -2.5rem;
+}
+
+.message:not(.yours) + .message:not(.yours) {
+  margin-top: -2.5rem;
+}
+
+.message > .image-container {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: 6rem;
+  height: 100%;
+  padding: 0 1rem;
+}
+
+.message.yours + .message.yours > .image-container,
+.message:not(.yours) + .message:not(.yours) > .image-container {
+  visibility: hidden;
+}
+
+.message > .image-container img {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 2rem;
+}
+
+.message > .text-holder {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.message > .text-holder .content {
+  position: relative;
+  max-width: calc(100% - 1rem);
+  margin-inline-end: auto;
+  overflow: hidden;
+  background-color: var(--background-plus);
+}
+html[dir="ltr"] .message > .text-holder .content {
+  border-radius: 2rem 2rem 2rem 0.6rem;
+}
+html[dir="rtl"] .message > .text-holder .content {
+  border-radius: 2rem 2rem 0.6rem 2rem;
+}
+html[dir="ltr"] .message:not(.yours) + .message:not(.yours) > .text-holder .content {
+  border-radius: 0.6rem 2rem 2rem 0.6rem;
+}
+html[dir="rtl"] .message:not(.yours) + .message:not(.yours) > .text-holder .content {
+  border-radius: 2rem 0.6rem 0.6rem 2rem;
+}
+
+.message.yours > .text-holder .content {
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+  background-color: var(--accent-color);
+}
+html[dir="ltr"] .message.yours > .text-holder .content {
+  border-radius: 2rem 2rem 0.6rem 2rem;
+}
+html[dir="rtl"] .message.yours > .text-holder .content {
+  border-radius: 2rem 2rem 2rem 0.6rem;
+}
+html[dir="ltr"] .message.yours + .message.yours > .text-holder .content {
+  border-radius: 2rem 0.6rem 0.6rem 2rem;
+}
+html[dir="rtl"] .message.yours + .message.yours > .text-holder .content {
+  border-radius: 0.6rem 2rem 2rem 0.6rem;
+}
+
+.message > .text-holder .content > .text {
+  box-sizing: border-box;
+  padding: 1rem 1.5rem;
+  color: var(--text-color);
+  font-weight: normal;
+  font-size: 1.6rem;
+}
+
+.message.yours > .text-holder .content > .text {
+  color: var(--accent-color-plus);
+}
+
+.message > .text-holder .message-info {
+  display: flex;
+  height: 2rem;
+  gap: 0.3rem;
+  color: var(--text-color-faded);
+  font-weight: normal;
+  font-size: 1.4rem;
+  line-height: 2rem;
+}
+
+.message.yours > .text-holder .message-info {
+  justify-content: end;
+}
+
+.message.yours + .message.yours > .text-holder .message-info,
+.message:not(.yours) + .message:not(.yours) > .text-holder .message-info {
+  visibility: hidden;
+}
+
+.messagebox-container {
+  box-sizing: border-box;
+  z-index: 5;
+  width: 100%;
+  max-width: var(--safezone-width);
+  height: calc(4.6rem + var(--software-buttons-height) + 1rem);
+  margin: 0 auto;
+  margin-top: calc(-4.6rem - var(--software-buttons-height));
+  padding: 0 1.5rem calc(var(--software-buttons-height) + 1rem);
+  background-image: linear-gradient(to bottom, transparent 2.3rem, var(--background) 4.6rem)
+}
+
+.messagebox-container [role="messagebox"] {
+  /* background-color: var(--header-background); */
+  backdrop-filter: blur(20px) saturate(180%);
+}
+
+#messagebox-send-button:not(.from-scale) {
+  animation: send-button-appear 0.5s cubic-bezier(0.5, 0.8, 0, 1.1);
+}
+
+@keyframes send-button-appear {
+  from {
+    transform: scale(0.75);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  #root {
+    box-sizing: border-box;
+    visibility: visible;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    width: 32rem;
+    height: 100%;
+    transform: none;
+    filter: none;
+    opacity: 1;
+  }
+  html[dir="ltr"] #root {
+    left: 0;
+  }
+  html[dir="rtl"] #root {
+    right: 0;
+  }
+
+  #root.visible {
+    width: 100%;
+    border-inline-end: none;
+  }
+
+  #root > .content > *:not(.scroll-content),
+  #root > .content > .scroll-content > * {
+    visibility: visible;
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  [role="panel"]:not(#root) {
+    position: absolute;
+    top: 0;
+    width: calc(100% - 32rem);
+    height: 100%;
+  }
+  html[dir="ltr"] [role="panel"]:not(#root) {
+    left: 32rem;
+  }
+  html[dir="rtl"] [role="panel"]:not(#root) {
+    right: 32rem;
+  }
+}
