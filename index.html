@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0f6ff">
-  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000">
+  <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f0f6ff" />
+  <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000000" />
+  <link rel="shortcut icon" href="/style/icons/sms.svg" type="image/x-icon">
   <title data-l10n-id="title"></title>
   <link rel="stylesheet" type="text/css" href="./default_theme/style/index.css" />
   <link rel="stylesheet" type="text/css" href="./shared/style/layout.css" />
@@ -22,23 +23,27 @@
   <link rel="stylesheet" type="text/css" href="./shared/style/input_areas.css" />
   <link rel="stylesheet" type="text/css" href="./shared/style/transitions.css" />
   <link rel="stylesheet" type="text/css" href="style/sms.css" />
-  <script type="module" src="./shared/services/orchid_services.js"></script>
+  <link rel="stylesheet" type="text/css" href="style/media.css" />
+  <script type="module" src="https://orchid-f39a9.web.app/orchid_services.js"></script>
   <script defer type="text/javascript" src="./shared/js/smooth-scrollbar.js"></script>
   <script defer type="text/javascript" src="./shared/js/plugins/overscroll.js"></script>
   <script defer type="text/javascript" src="./shared/js/panels.js"></script>
   <script defer type="text/javascript" src="./shared/js/spatial_navigation.js"></script>
-  <script defer type="text/javascript" src="./shared/js/common/page_controller.js"></script>
+  <script defer type="text/javascript" src="./shared/js/page_controller.js"></script>
+  <script type="text/javascript" src="./shared/js/file_picker.js"></script>
+  <script type="text/javascript" src="./shared/js/compress_image.js"></script>
   <script defer type="text/javascript" src="./shared/js/transitions.js"></script>
   <script type="text/javascript" src="js/bootstrap.js"></script>
   <script defer type="text/javascript" src="js/friends.js"></script>
+  <script defer type="text/javascript" src="js/pages/add_friend/main.js"></script>
   <script defer type="text/javascript" src="js/pages/chat/main.js"></script>
   <script defer type="text/javascript" src="js/pages/chat/emojis.js"></script>
 
   <script type="text/javascript" src="./shared/js/l10n.js"></script>
-  <meta name="defaultLanguage" content="en-US">
+  <meta name="defaultLanguage" content="en-US" />
   <meta name="availableLanguages"
-    content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi">
-  <link rel="localization" href="./locales/main.{locale}.properties">
+    content="af, ar, az, be, bg, bn, ca, cs, cy, da, de, el, eo, et, en-US, es, eu, fa, fi, fr, ga, gu, gl, he, hi, hr, ht, hu, id, is, it, ja, kn, ko, ku, lt, lv, mk, ms, nl, no, pl, pt, ro, ru, sq, sk, sl, sr, sw, ta, te, th, tl, tr, uk, ur, vi, yi, zh, fr-psaccent, ar-psbidi" />
+  <link rel="localization" href="./locales/main.{locale}.properties" />
 </head>
 
 <body>
@@ -49,14 +54,14 @@
           <h1 data-l10n-id="title"></h1>
           <menu role="toolbar">
             <a href="#" data-icon="search"></a>
-            <a href="#" data-icon="add" data-page-id="add"></a>
+            <a href="#" data-icon="users" data-page-id="add-friend"></a>
           </menu>
         </div>
       </header>
 
       <div class="content lists">
         <form action="" id="searchbox" role="search">
-          <input type="text" name="" id="" data-l10n-id="type-here-to-search">
+          <input type="text" name="" id="" data-l10n-id="type-here-to-search" />
           <button type="reset" data-icon="close"></button>
           <button type="submit" data-icon="search"></button>
         </form>
@@ -84,27 +89,52 @@
       <div id="chat-messages" class="messages"></div>
 
       <div class="messagebox-container">
+        <div id="attached-media"></div>
+
         <form action="" id="messagebox" role="messagebox">
-          <button data-icon="attachments"></button>
-          <input type="text" name="" id="messagebox-input" data-l10n-id="type-message" autocomplete="off">
-          <button data-icon="emojis"></button>
+          <button type="button" id="messagebox-attachment-button" data-icon="attachments"></button>
+          <input type="text" name="" id="messagebox-input" data-l10n-id="type-message" autocomplete="off" />
+          <button type="button" id="messagebox-emojis-button" data-icon="emojis"></button>
           <button type="submit" id="messagebox-send-button" data-icon="send"></button>
         </form>
       </div>
     </section>
 
-    <section id="add" role="panel">
+    <section id="add-friend" role="panel">
       <header class="compact" role="header">
         <div class="safezone">
           <a href="#" data-icon="arrow-back" data-page-id="root"></a>
-          <h1 data-l10n-id="add"></h1>
+          <h1 data-l10n-id="addFriend"></h1>
         </div>
       </header>
 
       <div class="content lists">
         <ul>
           <li class="noclick">
-            <input type="text" name="" id="add-tag" data-l10n-id="addTag">
+            <p data-l10n-id="addFriendHandle"></p>
+            <form action="" id="add-friend-form">
+              <input type="text" name="" id="add-friend-form-input" data-l10n-id="addFriendHandleInput" />
+            </form>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="media-viewer" role="panel">
+      <header class="compact" role="header">
+        <div class="safezone">
+          <a href="#" data-icon="arrow-back" data-page-id="chat"></a>
+          <h1 data-l10n-id="mediaViewer"></h1>
+        </div>
+      </header>
+
+      <div class="content lists">
+        <ul>
+          <li class="noclick">
+            <p data-l10n-id="addFriendHandle"></p>
+            <form action="" id="add-friend-form">
+              <input type="text" name="" id="add-friend-form-input" data-l10n-id="addFriendHandleInput" />
+            </form>
           </li>
         </ul>
       </div>

@@ -84,7 +84,7 @@
 
 .message > .text-holder .content {
   position: relative;
-  max-width: calc(100% - 1rem);
+  max-width: calc(100% - 1rem - 6rem);
   margin-inline-end: auto;
   overflow: hidden;
   background-color: var(--background-plus);
@@ -156,7 +156,6 @@ html[dir="rtl"] .message.yours + .message.yours > .text-holder .content {
   z-index: 5;
   width: 100%;
   max-width: var(--safezone-width);
-  height: calc(4.6rem + var(--software-buttons-height) + 1rem);
   margin: 0 auto;
   margin-top: calc(-4.6rem - var(--software-buttons-height));
   padding: 0 1.5rem calc(var(--software-buttons-height) + 1rem);
@@ -164,7 +163,6 @@ html[dir="rtl"] .message.yours + .message.yours > .text-holder .content {
 }
 
 .messagebox-container [role="messagebox"] {
-  /* background-color: var(--header-background); */
   backdrop-filter: blur(20px) saturate(180%);
 }
 

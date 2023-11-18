@@ -39,16 +39,19 @@
         const username = document.createElement('p');
         textHolder.appendChild(username);
 
+        const status = document.createElement('p');
+        textHolder.appendChild(status);
+
         OrchidServices.getWithUpdate(`profile/${friend.friend_id}`, (data) => {
           avatar.src = data.profile_picture;
           username.textContent = data.username;
 
           if (!data.status && !data.status.text) {
+            status.style.display = 'none';
             return;
           }
-          const status = document.createElement('p');
           status.textContent = data.status.text;
-          textHolder.appendChild(status);
+          status.style.display = 'block';
         });
       }
     },
@@ -62,6 +65,8 @@
   };
 
   window.addEventListener('orchidservicesload', () => {
-    Friends.init();
+    setTimeout(() => {
+      Friends.init();
+    }, 500);
   });
 })(window);
