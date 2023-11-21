@@ -15,7 +15,7 @@
     });
   }
 
-  window.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function () {
     SpatialNavigation.init();
     SpatialNavigation.add({
       selector: '.tablist a, .tablist button, .tablist .lists ul li, .visible a, .visible button, .visible .lists ul li, .visible .lists ul li input'
