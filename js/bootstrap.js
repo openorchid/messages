@@ -1,7 +1,6 @@
 !(function (exports) {
   'use strict';
 
-  // Check if the browser supports service workers
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker
