@@ -1,7 +1,8 @@
 {
   "version": "1.0",
   "name": "Messages",
-  "description": "",
+  "long_name": "Orchid Messages",
+  "description": "Message your friends at anytime from anywhere.",
   "launch_path": "/index.html",
   "icons": {
     "16": "/style/icons/sms_16.png",
