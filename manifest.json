@@ -17,11 +17,14 @@
     "url": "https://openorchid.github.io/"
   },
   "default_locale": "en",
-  "orientation": "portrait-primary",
+  "orientation": "portrait",
   "background_color": "#f0f6ff",
-  "theme_color": "#60ff80",
+  "theme_color": "#0061e0",
   "permissions": {
     "settings": {}
   },
-  "display": "immersive"
+  "display": "immersive",
+  "serviceworker": {
+    "script_url": "sw-global.js"
+  }
 }
