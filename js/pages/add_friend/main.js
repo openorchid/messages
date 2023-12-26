@@ -14,10 +14,10 @@
       if (this.formInput.value === '') {
         return;
       }
-      const user = await OrchidServices.auth.getUserByHandle(this.formInput.value);
+      const user = await _os.auth.getUserByHandle(this.formInput.value);
       if (user) {
         this.formInput.value = '';
-        OrchidServices.messages.addFriend(user.token);
+        _os.messages.addFriend(user.token);
       }
     }
   };

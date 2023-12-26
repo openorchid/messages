@@ -5,15 +5,35 @@
     friendsList: document.getElementById('friends-list'),
     peopleList: document.getElementById('people-list'),
     chatName: document.getElementById('chat-name'),
+    chatAvatar: document.getElementById('chat-avatar'),
+
+    noContactsScreen: document.getElementById('empty-screen-no-contacts'),
+    noAccountScreen: document.getElementById('empty-screen-no-account'),
 
     init: async function () {
-      if ('OrchidServices' in window) {
-        if (await OrchidServices.isUserLoggedIn()) {
-          OrchidServices.getWithUpdate(
-            `profile/${await OrchidServices.userId()}`,
-            (data) => this.populateFriends(data.friends)
-          );
+      this.populateSkeletonPolymer();
+
+      if ('_os' in window) {
+        this.noContactsScreen.classList.remove('visible');
+        if (await _os.isLoggedIn()) {
+          this.noAccountScreen.classList.remove('visible');
+          _os.auth.getFriends(await _os.userID()).then((data) => {
+            if (data) {
+              this.populateFriends(data);
+              RippleEffect.addRippleEffect('#friends-list li');
+              this.noContactsScreen.classList.remove('visible');
+            } else {
+              this.friendsList.innerHTML = '';
+              this.noContactsScreen.classList.add('visible');
+            }
+          });
+        } else {
+          this.friendsList.innerHTML = '';
+          this.noAccountScreen.classList.add('visible');
         }
+      } else {
+        this.friendsList.innerHTML = '';
+        this.noContactsScreen.classList.add('visible');
       }
     },
 
@@ -29,8 +49,16 @@
         this.friendsList.appendChild(element);
         PageController.init();
 
+        const avatarHolder = document.createElement('div');
+        avatarHolder.classList.add('avatar');
+        element.appendChild(avatarHolder);
+
         const avatar = document.createElement('img');
-        element.appendChild(avatar);
+        avatarHolder.appendChild(avatar);
+
+        const avatarActivity = document.createElement('div');
+        avatarActivity.classList.add('activity');
+        avatarHolder.appendChild(avatarActivity);
 
         const textHolder = document.createElement('div');
         textHolder.classList.add('vbox');
@@ -42,31 +70,56 @@
         const status = document.createElement('p');
         textHolder.appendChild(status);
 
-        OrchidServices.getWithUpdate(`profile/${friend.friend_id}`, (data) => {
-          avatar.src = data.profile_picture;
-          username.textContent = data.username;
-
-          if (!data.status && !data.status.text) {
+        _os.auth.getAvatar(friend.friend_id).then((data) => {
+          avatar.src = data;
+        });
+        _os.auth.getUsername(friend.friend_id).then((data) => {
+          username.textContent = data;
+        });
+        _os.auth.getLiveStatus(friend.friend_id, (data) => {
+          if (!data.status && !data.text) {
             status.style.display = 'none';
             return;
           }
-          status.textContent = data.status.text;
+          status.textContent = data.text;
           status.style.display = 'block';
+        });
+        _os.auth.getLiveState(friend.friend_id, (data) => {
+          avatarActivity.classList.add(data);
         });
       }
     },
 
+    populateSkeletonPolymer: function () {
+      this.friendsList.innerHTML = '';
+      for (let index = 0; index < 16; index++) {
+        const element = document.createElement('li');
+        element.classList.add('noclick');
+        element.dataset.pageId = 'chat';
+        element.addEventListener('click', () => this.handleFriendClick(friend));
+        this.friendsList.appendChild(element);
+
+        const textHolder = document.createElement('div');
+        textHolder.classList.add('vbox');
+        element.appendChild(textHolder);
+
+        const username = document.createElement('p');
+        username.textContent = `Username ${Math.random() * 32767}`;
+        username.classList.add('pack-skeleton');
+        textHolder.appendChild(username);
+      }
+    },
+
     handleFriendClick: function (friend) {
-      OrchidServices.get(`profile/${friend.friend_id}`).then((data) => {
-        this.chatName.textContent = data.username;
-        Chat.initializeChannel(friend.token);
+      _os.auth.getUsername(friend.friend_id).then((data) => {
+        this.chatName.textContent = data;
       });
+      _os.auth.getAvatar(friend.friend_id).then((data) => {
+        this.chatAvatar.src = data;
+      });
+      Chat.initializeChannel(friend.token);
     }
   };
 
-  window.addEventListener('orchidservicesload', () => {
-    setTimeout(() => {
-      Friends.init();
-    }, 500);
-  });
+  Friends.init();
 })(window);

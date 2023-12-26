@@ -19,7 +19,8 @@
   opacity: 1;
 }
 
-#attached-media > .image {
+#attached-media > .image,
+#attached-media > .video {
   min-width: 9rem;
   height: 9rem;
   margin: 0.5rem 0;
@@ -36,9 +37,11 @@
   background: var(--background-plus);
 }
 
-.message .media > .image {
+.message .media > .image,
+.message .media > .video {
   flex-grow: 1;
   flex-shrink: 0;
+  width: 100%;
   max-height: 20rem;
   object-fit: contain;
 }

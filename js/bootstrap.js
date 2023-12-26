@@ -14,6 +14,14 @@
     });
   }
 
+  window.addEventListener('orchid-services-ready', () => {
+    LazyLoader.load('js/friends.js');
+    LazyLoader.load('js/notifications.js');
+    LazyLoader.load('js/account_init.js');
+    LazyLoader.load('js/account.js');
+    LazyLoader.load('js/modal_dialog.js');
+  });
+
   document.addEventListener('DOMContentLoaded', function () {
     SpatialNavigation.init();
     SpatialNavigation.add({

@@ -3,8 +3,6 @@
   "short_name": "Messages",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f0f6ff",
-  "theme_color": "#0061e0",
   "icons": [
     {
       "src": "./style/icons/sms_16.png",
